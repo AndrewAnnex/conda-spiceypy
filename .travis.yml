@@ -13,6 +13,8 @@ install:
 - wget https://raw.githubusercontent.com/pelson/Obvious-CI/master/bootstrap-obvious-ci-and-miniconda.py
 - python bootstrap-obvious-ci-and-miniconda.py ~/miniconda x64 $PYVERSION --without-obvci && source ~/miniconda/bin/activate root
 - conda install -q -y conda-build
+- conda install -q -y anaconda-client
+- conda install -q -y anaconda-build
 script:
 - CONDA_OUTPUT=$(conda build spiceypy -q --no-anaconda-upload --output)
 - echo $CONDA_OUTPUT
