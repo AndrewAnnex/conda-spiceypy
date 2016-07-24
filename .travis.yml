@@ -1,0 +1,23 @@
+# defaulting to some other lang as we will be using obvious-ci
+
+language: c
+sudo: false
+
+env:
+    - PYVERSION=2
+    - PYVERSION=3
+
+os:
+    - linux
+    - osx
+
+before_install:
+    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew install check; fi
+
+install:
+    - wget https://raw.githubusercontent.com/pelson/Obvious-CI/master/bootstrap-obvious-ci-and-miniconda.py
+    - python bootstrap-obvious-ci-and-miniconda.py ~/miniconda x64 $PYVERSION --without-obvci && source ~/miniconda/bin/activate root
+    - conda install -q -y conda-build
+
+script:
+    - conda build spiceypy -q --no-anaconda-upload
