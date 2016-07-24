@@ -18,6 +18,7 @@ install:
 - conda install -q -y anaconda-client
 - conda install -q -y anaconda-build
 script:
+- conda build spiceypy -q --no-anaconda-upload
 - CONDA_OUTPUT=$(conda build spiceypy -q --no-anaconda-upload --output)
 - echo $CONDA_OUTPUT
 - echo $(wc -c < "$CONDA_OUTPUT")
