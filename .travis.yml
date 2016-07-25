@@ -24,4 +24,3 @@ script:
 - echo $(wc -c < "$CONDA_OUTPUT")
 after_script:
 - if [[ ( "$TRAVIS_PULL_REQUEST" == 'false' ) && ( "$TRAVIS_BRANCH" == 'master' ) ]]; then ~/miniconda/bin/anaconda -t ${BINSTAR_TOKEN} upload ${CONDA_OUTPUT} -u andrewannex; fi
-q
