@@ -1,0 +1,21 @@
+diff --git a/getspice.py b/getspice.py
+index 7a0b4f1..ac84c82 100644
+--- a/getspice.py
++++ b/getspice.py
+@@ -75,10 +75,16 @@ def getSpice():
+ 
+     print('Unpacking... (this may take some time!)')
+     if result.endswith('zip'):
++        print("OK we have a zip file")
+         filelike = io.BytesIO(download.read())
++        print("ok have filelike")
+         with zipfile.ZipFile(filelike, 'r') as archive:
++            print("in zipfile")
+             archive.extractall(root_dir)
++            print("ran extract all")
++        print("outside With")
+         filelike.close()
++        print("closed file")
+     else:
+         cmd = 'gunzip | tar xC ' + root_dir
+         proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE)
