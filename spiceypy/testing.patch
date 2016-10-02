@@ -1,5 +1,18 @@
+diff --git a/appveyor/makeDynamicSpice.bat b/appveyor/makeDynamicSpice.bat
+index 9396a5f..f6199d8 100644
+--- a/appveyor/makeDynamicSpice.bat
++++ b/appveyor/makeDynamicSpice.bat
+@@ -8,7 +8,7 @@ rem    Specifically cl.exe and link.exe .
+ rem
+ rem
+ @echo on
+-rem Running makeDynamicSpice.bat, this may take some time (a minute or two) ...
++rem Running makeDynamicSpice.bat, ZZZ this may take some time (a minute or two) ...
+ @echo off
+ 
+ set cl= /c /O2 /nologo -D_COMPLEX_DEFINED -DMSDOS -DOMIT_BLANK_CC -DNON_ANSI_STDIO
 diff --git a/setup.py b/setup.py
-index c2b6446..8a29348 100644
+index c2b6446..c08ad01 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -97,6 +97,7 @@ def build_library():
@@ -10,14 +23,15 @@ index c2b6446..8a29348 100644
          currentDir = os.getcwd()
          try:
              destination = os.path.join(cspice_dir, "src", "cspice")
-@@ -106,11 +107,14 @@ def build_library():
+@@ -106,11 +107,15 @@ def build_library():
              shutil.copy(makeBat, destination)
              # run the script
              os.chdir(destination)
 +            print("about to run make dynamic")
              windows_build = subprocess.Popen("makeDynamicSpice.bat", shell=True)
-+            print("finished make dynamic")
              status = windows_build.wait()
++            print("finished make dynamic")
++            print("STATUS CODE: ", str(status))
              if status != 0:
                  raise BaseException('{0}'.format(status))
          except BaseException as error:
@@ -25,7 +39,7 @@ index c2b6446..8a29348 100644
              sys.exit("Build failed with: {0}".format(error.args))
              pass
          finally:
-@@ -125,6 +129,24 @@ def move_to_root_directory():
+@@ -125,6 +130,24 @@ def move_to_root_directory():
              if host_OS == "Linux" or host_OS == "Darwin":
                  os.rename(os.path.join(cspice_dir, 'lib', 'spice.so'), destination)
              elif host_OS == "Windows":
@@ -50,7 +64,7 @@ index c2b6446..8a29348 100644
                  os.rename(os.path.join(cspice_dir, 'src', 'cspice', 'cspice.dll'), destination)
          except BaseException as e:
              sys.exit('{0} file not found, what happend?: {1}'.format(sharedLib, e))
-@@ -160,7 +182,9 @@ def windows_method():
+@@ -160,7 +183,9 @@ def windows_method():
              return
          else:
              # Build the DLL
