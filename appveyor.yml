@@ -44,8 +44,7 @@ platform:
   - x64
 
 install:
-  # I think setting the path below is redundant
-  # - set PATH=%CONDA%;%CONDA%/Scripts;%CONDA%/Library/bin;%PATH%
+  - set PATH=%CONDA%;%CONDA%/Scripts;%CONDA%/Library/bin;%PATH%
   # Update to a known good conda, found from https://github.com/numba/numba/blob/master/appveyor.yml
   # (to workaround http://help.appveyor.com/discussions/problems/4910)
   - "conda install -q -y conda=4.1.4"
