@@ -14,6 +14,7 @@ environment:
         ARCH: "32"
         PLAT_NAME: "win32"
         PY_TAG: "cp27"
+        VS_YEAR: "2012"
 
       - PYTHON: "C:\\Python27-x64"
         CONDA: "C:\\Miniconda-x64"
