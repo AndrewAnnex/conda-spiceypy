@@ -12,7 +12,7 @@ index 9396a5f..f6199d8 100644
  
  set cl= /c /O2 /nologo -D_COMPLEX_DEFINED -DMSDOS -DOMIT_BLANK_CC -DNON_ANSI_STDIO
 diff --git a/setup.py b/setup.py
-index c2b6446..722caaf 100644
+index c2b6446..e645e97 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -97,6 +97,7 @@ def build_library():
@@ -39,10 +39,17 @@ index c2b6446..722caaf 100644
              sys.exit("Build failed with: {0}".format(error.args))
              pass
          finally:
-@@ -125,9 +130,22 @@ def move_to_root_directory():
+@@ -120,14 +125,32 @@ def build_library():
+ def move_to_root_directory():
+     sharedLib = 'spice.so' if host_OS == "Linux" or host_OS == "Darwin" else 'cspice.dll'
+     destination = os.path.join(root_dir, 'spiceypy', 'utils', sharedLib)
++    win_destination = os.path.join(root_dir, 'spiceypy', 'utils')
+     if not os.path.isfile(destination):
+         try:
              if host_OS == "Linux" or host_OS == "Darwin":
                  os.rename(os.path.join(cspice_dir, 'lib', 'spice.so'), destination)
              elif host_OS == "Windows":
++
 +                print("")
 +                print("")
 +                print("####################################################")
@@ -51,18 +58,21 @@ index c2b6446..722caaf 100644
 +                print("destination: " + destination)
 +                print("")
 +                print("####################################################")
-+                print("Does cspice.dll exist where we think it does? {}".format(os.path.exists(os.path.join(cspice_dir, 'src', 'cspice', 'cspice.dll'))))
-+                print("current contents in destination: ", [x for x in os.listdir(os.path.join(destination))])
++                where_we_think_it_is = os.path.join(cspice_dir, 'src', 'cspice')
++                where_we_think_it_is_cspice = os.path.join(cspice_dir, 'src', 'cspice', 'cspice.dll')
++                print("Does cspice.dll exist where we think it does? {}".format(os.path.exists(where_we_think_it_is_cspice)))
++                print("What is in where we think it is: ", [x for x in os.listdir(where_we_think_it_is)])
++                print("current contents in destination: ", [x for x in os.listdir(win_destination)])
                  os.rename(os.path.join(cspice_dir, 'src', 'cspice', 'cspice.dll'), destination)
          except BaseException as e:
              sys.exit('{0} file not found, what happend?: {1}'.format(sharedLib, e))
 +        finally:
 +            print("we should have moved cspide.dll or cspice.so to the right spot")
-+            print([x for x in os.listdir(os.path.join(destination))])
++            print([x for x in os.listdir(win_destination)])
  
  
  def cleanup():
-@@ -160,7 +178,9 @@ def windows_method():
+@@ -160,7 +183,9 @@ def windows_method():
              return
          else:
              # Build the DLL
