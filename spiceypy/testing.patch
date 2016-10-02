@@ -35,7 +35,7 @@ index 9396a5f..8f47f57 100644
 -@echo on
  rem Finished Linking Spice, makeDynamicSpice.bat completed.
 diff --git a/setup.py b/setup.py
-index c2b6446..d63e12a 100644
+index c2b6446..7ac0543 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -97,6 +97,7 @@ def build_library():
@@ -78,7 +78,7 @@ index c2b6446..d63e12a 100644
              sys.exit("Build failed with: {0}".format(error.args))
              pass
          finally:
-@@ -125,6 +144,24 @@ def move_to_root_directory():
+@@ -125,7 +144,28 @@ def move_to_root_directory():
              if host_OS == "Linux" or host_OS == "Darwin":
                  os.rename(os.path.join(cspice_dir, 'lib', 'spice.so'), destination)
              elif host_OS == "Windows":
@@ -99,11 +99,15 @@ index c2b6446..d63e12a 100644
 +                print("")
 +                print("####################################################")
 +                print("")
-+                print("")
++                print("current contents in destination")
++                print([x for x in os.listdir(os.path.join(destination))])
                  os.rename(os.path.join(cspice_dir, 'src', 'cspice', 'cspice.dll'), destination)
++                print("we should have moved cspide.dll to the right spot")
++                print([x for x in os.listdir(os.path.join(destination))])
          except BaseException as e:
              sys.exit('{0} file not found, what happend?: {1}'.format(sharedLib, e))
-@@ -160,7 +197,9 @@ def windows_method():
+ 
+@@ -160,7 +200,9 @@ def windows_method():
              return
          else:
              # Build the DLL
