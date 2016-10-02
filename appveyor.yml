@@ -49,7 +49,7 @@ install:
   # (to workaround http://help.appveyor.com/discussions/problems/4910)
   - "conda install -q -y conda=4.1.4"
   - "conda install -q -y conda-build anaconda-client anaconda-build"
-  - "set CONDA_OUTPUT=$(conda build spiceypy -q --no-anaconda-upload --output)"
+  - "conda build spiceypy -q --no-anaconda-upload"
   - ps: ls $env:CONDA_OUTPUT
   - set PATH=%BK_PATH%
 
