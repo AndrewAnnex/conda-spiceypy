@@ -1,16 +1,7 @@
 diff --git a/appveyor/makeDynamicSpice.bat b/appveyor/makeDynamicSpice.bat
-index 9396a5f..5c7fd46 100644
+index 9396a5f..87db71c 100644
 --- a/appveyor/makeDynamicSpice.bat
 +++ b/appveyor/makeDynamicSpice.bat
-@@ -8,7 +8,7 @@ rem    Specifically cl.exe and link.exe .
- rem
- rem
- @echo on
--rem Running makeDynamicSpice.bat, this may take some time (a minute or two) ...
-+rem Running makeDynamicSpice.bat, ZZZ this may take some time (a minute or two) ...
- @echo off
- 
- set cl= /c /O2 /nologo -D_COMPLEX_DEFINED -DMSDOS -DOMIT_BLANK_CC -DNON_ANSI_STDIO
 @@ -39,11 +39,9 @@ cl zzsecprt.c >nul
  dir /b *.obj > temp.lst
  @echo on
@@ -20,11 +11,12 @@ index 9396a5f..5c7fd46 100644
  rem Create cspice.dll
  rem
  
- link /DLL /OUT:cspice.dll /DEF:cspice.def /IMPLIB:cspice.lib @temp.lst >nul
+-link /DLL /OUT:cspice.dll /DEF:cspice.def /IMPLIB:cspice.lib @temp.lst >nul
 -@echo on
++link /DLL /OUT:cspice.dll /DEF:cspice.def /IMPLIB:cspice.lib @temp.lst
  rem Finished Linking Spice, makeDynamicSpice.bat completed.
 diff --git a/setup.py b/setup.py
-index c2b6446..dbd6f0e 100644
+index c2b6446..dae9ba6 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -97,37 +97,61 @@ def build_library():
@@ -54,7 +46,7 @@ index c2b6446..dbd6f0e 100644
              sys.exit("Build failed with: {0}".format(error.args))
              pass
          finally:
-+            print("Does cspice.dll exist where we think it does after building?: ", os.listdir(destination))
++            print("Does cspice.dll exist where we think it does after building?: ", os.path.exists(destination))
              os.chdir(currentDir)
  
  
@@ -79,7 +71,7 @@ index c2b6446..dbd6f0e 100644
 +                where_we_think_it_is = os.path.join(cspice_dir, 'src', 'cspice')
 +                where_we_think_it_is_cspice = os.path.join(cspice_dir, 'src', 'cspice', 'cspice.dll')
 +                print("Does cspice.dll exist where we think it does? {}".format(os.path.exists(where_we_think_it_is_cspice)))
-+                print("What is in where we think it is: ", [x for x in os.listdir(where_we_think_it_is)])
++                print("What is in where we think it is: ", [x for x in os.listdir(where_we_think_it_is) if "cspice" in x])
 +                print("current contents in destination: ", [x for x in os.listdir(win_destination)])
                  os.rename(os.path.join(cspice_dir, 'src', 'cspice', 'cspice.dll'), destination)
          except BaseException as e:
