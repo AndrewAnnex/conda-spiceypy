@@ -5,8 +5,6 @@
 build: off
 
 environment:
-  global:
-      WITH_COMPILER: "cmd /E:ON /V:ON /C .\\appveyor\\windows_sdk.cmd"
 
   matrix:
       - PYTHON: "C:\\Python27"
@@ -46,14 +44,12 @@ platform:
   - x64
 
 install:
-  - set PATH=%CONDA%;%CONDA%/Scripts;%CONDA%/Library/bin;%PATH%
+  # I think setting the path below is redundant
+  # - set PATH=%CONDA%;%CONDA%/Scripts;%CONDA%/Library/bin;%PATH%
   # Update to a known good conda, found from https://github.com/numba/numba/blob/master/appveyor.yml
   # (to workaround http://help.appveyor.com/discussions/problems/4910)
   - "conda install -q -y conda=4.1.4"
-  - "conda install -q -y conda-build"
-  - "conda install -q -y anaconda-client"
-  - "conda install -q -y anaconda-build"
-  - "conda build spiceypy -q --no-anaconda-upload"
+  - "conda install -q -y conda-build anaconda-client anaconda-build"
   - "set CONDA_OUTPUT=$(conda build spiceypy -q --no-anaconda-upload --output)"
   - ps: ls $env:CONDA_OUTPUT
   - set PATH=%BK_PATH%
