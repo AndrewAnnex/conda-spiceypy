@@ -46,7 +46,7 @@ artifacts:
   path: win-64/*.tar.bz2
 
 deploy_script:
-  - ps: If ($env:APPVEYOR_REPO_BRANCH -eq "master") { anaconda -t $env:BINSTAR_TOKEN upload ./win-64/* -u andrewannex } Else { "Not on Master, won't deploy" }
+  - ps: If ($env:APPVEYOR_REPO_BRANCH -eq "master") { anaconda -t $env:BINSTAR_TOKEN upload ./win-64/*.tar.bz2 -u andrewannex } Else { "Not on Master, won't deploy" }
 
 on_success:
   - ECHO "DONE"
