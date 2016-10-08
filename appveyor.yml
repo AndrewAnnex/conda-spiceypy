@@ -9,44 +9,52 @@ environment:
     secure: 3PbBhttz0hZjGherXRyVjGaIsCCzKFPVkS0mpolnTbtAkQrRN32arMVJN+wbk+Vm
 
   matrix:
-      - PYTHON: "C:\\Python27-x64"
-        CONDA: "C:\\Miniconda-x64"
+      - CONDA: "C:\\Miniconda"
+        CONDA_BUILDS: C:\\Miniconda\conda-bld\win-32
+        PYTHON_VERSION: "2.7.x"
+        ARCH: "32"
+        PLAT_NAME: "win-32"
+
+      - CONDA: "C:\\Miniconda-x64"
         CONDA_BUILDS: C:\\Miniconda-x64\conda-bld\win-64
         PYTHON_VERSION: "2.7.x"
         ARCH: "64"
-        PLAT_NAME: "win-amd64"
-        PY_TAG: "cp27"
+        PLAT_NAME: "win-64"
 
-      - PYTHON: "C:\\Python35-x64"
-        CONDA: "C:\\Miniconda35-x64"
+      - CONDA: "C:\\Miniconda35"
+        CONDA_BUILDS: C:\\Miniconda35\conda-bld\win-32
+        PYTHON_VERSION: "3.5.x"
+        ARCH: "32"
+        WINDOWS_SDK_VERSION: "v7.1"
+        PLAT_NAME: "win-32"
+
+      - CONDA: "C:\\Miniconda35-x64"
         CONDA_BUILDS: C:\\Miniconda35-x64\conda-bld\win-64
         PYTHON_VERSION: "3.5.x"
         ARCH: "64"
         WINDOWS_SDK_VERSION: "v7.1"
-        PLAT_NAME: "win-amd64"
-        PY_TAG: "cp35"
+        PLAT_NAME: "win-64"
 
 platform:
   - x64
 
 install:
-  - set PATH=%CONDA%;%CONDA%/Scripts;%CONDA%/Library/bin;%PATH%
+  - "set PATH=%CONDA%;%CONDA%/Scripts;%PATH%"
   # Update to a known good conda, found from https://github.com/numba/numba/blob/master/appveyor.yml
   # (to workaround http://help.appveyor.com/discussions/problems/4910)
-  - "conda install -q -y conda=4.1.4"
-  - "conda install -q -y conda-build anaconda-client"
+  - "%CONDA%/Scripts/conda install -q -y conda=4.1.4"
+  - "%CONDA%/Scripts/conda install -q -y conda-build anaconda-client numpy wheel six pytest"
   - IF "%ARCH%"=="32" (call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86) ELSE (ECHO "probably a 64bit build")
   - IF "%ARCH%"=="64" (call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" amd64) ELSE (ECHO "probably a 32bit build")
-  - "conda build spiceypy -q --no-anaconda-upload"
-  - ps: mv $env:CONDA\conda-bld\win-64 ./
-  - set PATH=%BK_PATH%
+  - "%CONDA%/Scripts/conda build spiceypy -q --no-anaconda-upload"
+  - ps: mv $env:CONDA_BUILDS ./
 
 artifacts:
   # we only are building 64 bit win here
-  path: win-64/*.tar.bz2
+  path: win-*/*.tar.bz2
 
 deploy_script:
-  - ps: If ($env:APPVEYOR_REPO_BRANCH -eq "master") { anaconda -t $env:BINSTAR_TOKEN upload ./win-64/*.tar.bz2 -u andrewannex --no-progress --force } Else { "Not on Master, won't deploy" }
+  - ps: If ($env:APPVEYOR_REPO_BRANCH -eq "master") { anaconda -t $env:BINSTAR_TOKEN upload ./win-*/*.tar.bz2 -u andrewannex --no-progress --force } Else { "Not on Master, won't deploy" }
 
 on_success:
   - ECHO "DONE"
