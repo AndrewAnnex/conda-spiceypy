@@ -3,20 +3,35 @@ sudo: false
 env:
   matrix:
   - PYVERSION=2
+    MINORVERSION=2.7
+    NAME='py27'
   - PYVERSION=3
+    MINORVERSION=3.4
+    NAME='py3.4'
+  - PYVERSION=3
+    MINORVERSION=3.5
+    NAME='py3.5'
+  - PYVERSION=3
+    MINORVERSION=3.6
+    NAME='py3.6'
+
   global:
     secure: SCyg3/X2kg+YCHWfxIy1h1VFfPmHI0eh322cYWavpclsFUi7dmo+aRGT4KMdf2jW4zrd5670eVYpPQmOrr8m9nmiAAGgFcFUwcQgOC61XHFLnh8KrkegnDKphXQKYYA6YOb5TrEr0n4fIlRfNU8T7cvmqL9I78wK4O/hpNg5+9D8DMrOlnOWDFnaHJMgnMaE4NxK7q+TLZtVLqOWgQz/6xsODnzO8OQKsyhQVOwkt+xlzg/7+VtWMEBg+S9SNbG8/lpsnAenPEp2UWzwjzkMBvSXqN5oSLmaNgojSMIqpw2gKamxLPGxBOOQAuP2R2H1HC1FBD2yiJIZI4wtEGWouo3YJpzfqKpjZbxCHZpP68t/Qzg/xaRG3ClMYP4GFhqkHDosBav5qWwfHIhOsrPuAU4OTgqVXPDbmrJ6MGMRsqBhyXW5WVT04RvWJgn6zwLc6G7h9Mcf2pvpxAF1QoR51b2oZi4xpMkZZJ57/B9b3fSEGsolLNyBPRwpl3KS5IEqqJh0TI0eplowKf1Bx8jAyhMja0ovTZY5IHH6JURShSuQ0kMyFsh9MOXGQ9i5tnQvN3Yb4VNnwrzMmgV5cHAGLptY15phS1P5dm6Dzio0TGo78kO6PlFcj+77gxSuRpqJOuYbXvTSJQxgo5WxMsOdvDINX0EEAtK7GzrPDImxzd0=
 os:
 - linux
+  dist: trusty
 - osx
 before_install:
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew install check; fi
 install:
 - wget https://raw.githubusercontent.com/pelson/Obvious-CI/master/bootstrap-obvious-ci-and-miniconda.py
 - python bootstrap-obvious-ci-and-miniconda.py ~/miniconda x64 $PYVERSION --without-obvci && source ~/miniconda/bin/activate root
+- conda create -f -n $NAME python=$MINORVERSION anaconda
+- source activate '$NAME'
 - conda install -q -y conda-build
 - conda install -q -y anaconda-client
 - conda install -q -y anaconda-build
+
 script:
 - conda build spiceypy -q --no-anaconda-upload
 - CONDA_OUTPUT=$(conda build spiceypy -q --no-anaconda-upload --output)
