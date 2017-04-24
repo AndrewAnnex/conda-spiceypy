@@ -23,6 +23,7 @@ install:
 - python bootstrap-obvious-ci-and-miniconda.py ~/miniconda x64 3 --without-obvci && source ~/miniconda/bin/activate root
 - conda create -q -n 'spice' python=$PYMINORVERSION anaconda --yes
 - source activate 'spice'
+- conda remove  -q -y conda-env
 - conda install -q -y conda-build
 - conda install -q -y anaconda-client
 - conda install -q -y anaconda-build
