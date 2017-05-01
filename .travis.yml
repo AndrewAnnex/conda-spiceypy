@@ -24,7 +24,7 @@ matrix:
 before_install:
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew install check; fi
 install:
-- wget https://raw.githubusercontent.com/pelson/Obvious-CI/master/bootstrap-obvious-ci-and-miniconda.py
+- wget https://raw.githubusercontent.com/AndrewAnnex/Obvious-CI/fix_for_py2/bootstrap-obvious-ci-and-miniconda.py
 - python bootstrap-obvious-ci-and-miniconda.py ~/miniconda x64 $PYVERSION --without-obvci && source ~/miniconda/bin/activate root
 - conda install -q -y conda-build
 - conda install -q -y anaconda-client
