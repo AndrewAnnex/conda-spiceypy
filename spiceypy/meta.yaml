@@ -7,27 +7,32 @@ source:
     git_rev: v2.1.0
 
 build:
-    number: 0
+    number: 1
 
 requirements:
     build:
         - python
         - setuptools
         - six
-        - numpy
+        - numpy >=1.12
+        - certifi >=2017.1.23
+        - pytest
     run:
         - python
         - setuptools
         - six
-        - numpy
+        - numpy >=1.12
+        - certifi >=2017.1.23
+        - pytest
 
 test:
     imports:
         - spiceypy
     requires:
-        - numpy
+        - numpy >=1.12
         - pytest
         - six
+        - certifi >=2017.1.23
 
 about:
     home: https://github.com/AndrewAnnex/SpiceyPy
