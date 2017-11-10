@@ -2,25 +2,19 @@ sudo: false
 language: c
 env:
   global:
-    - secure: SCyg3/X2kg+YCHWfxIy1h1VFfPmHI0eh322cYWavpclsFUi7dmo+aRGT4KMdf2jW4zrd5670eVYpPQmOrr8m9nmiAAGgFcFUwcQgOC61XHFLnh8KrkegnDKphXQKYYA6YOb5TrEr0n4fIlRfNU8T7cvmqL9I78wK4O/hpNg5+9D8DMrOlnOWDFnaHJMgnMaE4NxK7q+TLZtVLqOWgQz/6xsODnzO8OQKsyhQVOwkt+xlzg/7+VtWMEBg+S9SNbG8/lpsnAenPEp2UWzwjzkMBvSXqN5oSLmaNgojSMIqpw2gKamxLPGxBOOQAuP2R2H1HC1FBD2yiJIZI4wtEGWouo3YJpzfqKpjZbxCHZpP68t/Qzg/xaRG3ClMYP4GFhqkHDosBav5qWwfHIhOsrPuAU4OTgqVXPDbmrJ6MGMRsqBhyXW5WVT04RvWJgn6zwLc6G7h9Mcf2pvpxAF1QoR51b2oZi4xpMkZZJ57/B9b3fSEGsolLNyBPRwpl3KS5IEqqJh0TI0eplowKf1Bx8jAyhMja0ovTZY5IHH6JURShSuQ0kMyFsh9MOXGQ9i5tnQvN3Yb4VNnwrzMmgV5cHAGLptY15phS1P5dm6Dzio0TGo78kO6PlFcj+77gxSuRpqJOuYbXvTSJQxgo5WxMsOdvDINX0EEAtK7GzrPDImxzd0=
-
+    secure: O0Dh5cuNtpYcuDgbNlzg+B+vS9Opu48pLwFRy8/WVYD2uhV0sRe3ktIAFv+rdtOxziHAb/DRCax6rXDgcr7Sz+Pdzc6f3Zabko989BQlWmZJPm/KzKIKCtgfsFRjlZtk8tuKVmUoanszKe+4w2lFoWqSR1NPXbvb/3DOwjnfxgw+arX3R1bw89mj144GVeEK4lbzOFs2bTfbljAy8AK+cbAvUKPw8L0R3KShliuRkfAb2lx+ZccvSOUT4nbDPOstMfhQt+tO4TYnr5KufQy0MVgVt2PVT8t6NEdSnTN9VQzBm1qvHepu8Wgm/gzQtFmRoDG0kY39x3A8P32wPhAer0mbjY+DOfOlf+eB780anEj7vBw6N0eahhRTr4Hlgp0iXhftbDphSD2KnfMQ7l0FlkEZOW8eo0O1QqrWhj6cgnKgmLLFg/h4sf6Z8s9AccYepnlUt/bXPvkbQ5L5Z/8LImg3wLm19QND69WzA3X2rnLwXS6LG84aOI7ilZpRBLf6dhjgFQK8mCmrEN0Wu2EERtCZTFYYW9XNvQyBlcGtSYLw3pXMREDW58cMHn4RwrC5xsWsgVRPppekK9sZuqQDNhRVq+9LFMTXfXagEijbZZ+WSc/VcgT1DZeoKbfkmbcFPatamE/L2Wf/ueqAhm3OO4WYxPP88YFExHiV3TxStvc=
 matrix:
   include:
-    # Trusty Ubuntu 14.04 LTS
-    - os: linux
-      dist: trusty
-      env: PYVERSION=2
-    # Trusty Ubuntu 14.04 LTS
-    - os: linux
-      dist: trusty
-      env: PYVERSION=3
-    # MacOS default
-    - os: osx
-      env: PYVERSION=2
-    # MacOS default
-    - os: osx
-      env: PYVERSION=3
-
+  - os: linux
+    dist: trusty
+    env: PYVERSION=2
+  - os: linux
+    dist: trusty
+    env: PYVERSION=3
+  - os: osx
+    env: PYVERSION=2
+  - os: osx
+    env: PYVERSION=3
 before_install:
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew install check; fi
 install:
@@ -28,7 +22,6 @@ install:
 - python bootstrap-obvious-ci-and-miniconda.py ~/miniconda x64 $PYVERSION --without-obvci && source ~/miniconda/bin/activate root
 - conda install -q -y conda-build
 - conda install -q -y anaconda-client
-
 script:
 - conda build spiceypy -q --no-anaconda-upload
 - CONDA_OUTPUT=$(conda build spiceypy -q --no-anaconda-upload --output)
